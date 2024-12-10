@@ -51,12 +51,34 @@
 
         static void ShowRanking()
         {
+            Console.WriteLine("Klassement:");
+            //foreach (KeyValuePair<string, int> pair in _ranking)
+            //{
+            //    Console.WriteLine($"- {pair.Key}: {pair.Value} punten.");
+            //}
+            foreach (string name in _ranking.Keys)
+            {
+                Console.WriteLine($"- {name}: {_ranking[name]} punten.");
+            }
 
+            Console.ReadKey(true);
         }
 
         static void ShowScore()
         {
+            Console.Write("Geef de naam van een deelnemer: ");
+            string name = Console.ReadLine();
 
+            if(_ranking.TryGetValue(name, out int score))
+            {
+                Console.WriteLine($"{name} heeft {score} punten.");
+            }
+            else
+            {
+                Console.WriteLine($"{name} staat niet in het klassement.");
+            }
+
+            Console.ReadKey(true);
         }
 
         static void AddOrUpdateScore()
@@ -78,16 +100,43 @@
                 _ranking.Add(name, score);
                 Console.WriteLine($"{name} is toegevoegd aan het klassement met {score} punten.");
             }
+
+            Console.ReadKey(true);
         }
 
         static void ShowAverage()
         {
+            //double average = _ranking.Average(x => x.Value);
 
+            double sum = 0;
+
+            foreach (int score in _ranking.Values)
+            {
+                sum += score;
+            }
+
+            double average = sum / _ranking.Count;
+
+            Console.WriteLine($"De gemiddelde score van alle deelnemers is: {average} punten.");
+            Console.ReadKey(true);
         }
 
         static void ShowHighest()
         {
+            //var highest = _ranking.MaxBy(kvp => kvp.Value);
 
+            KeyValuePair<string, int> highestPair = _ranking.First();
+            foreach(var pair in _ranking)
+            {
+                if(pair.Value > highestPair.Value)
+                {
+                    highestPair = pair;
+                }
+            }
+
+            Console.WriteLine($"De deelnemer met de hoogste score is {highestPair.Key} met {highestPair.Value} punten.");
+
+            Console.ReadKey(true);
         }
     }
 }
